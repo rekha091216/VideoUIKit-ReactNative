@@ -54,6 +54,7 @@ export interface DefaultRenderInterface {
   permissionStatus?: PermissionState;
   //applicable only to the screenshare
   parentUid?: UidType;
+  noiseSuppression: ToggleState;
 }
 export interface CustomRenderInterface<T> {
   type: T extends DefaultRenderInterface['type'] ? never : T;
@@ -77,6 +78,7 @@ interface localBtnStylesInterface {
   switchCamera?: StyleProp<ViewStyle>;
   endCall?: StyleProp<ViewStyle>;
   fullScreen?: StyleProp<ViewStyle>;
+  enableNoiseSuppression?: StyleProp<ViewStyle>;
 }
 
 interface StylePropInterface {
@@ -146,6 +148,7 @@ export interface CallbacksInterface {
   UpdateRenderList(uid: UidType, user: Partial<RenderInterface>): void;
   AddCustomContent(uid: UidType, data: any): void;
   UserPin(Uid: UidType): void;
+  LocalNoiseSuppression(muted: ToggleState): void;
 }
 
 export type CustomCallbacksInterface = CallbacksInterface;

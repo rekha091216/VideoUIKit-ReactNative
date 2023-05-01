@@ -17,6 +17,7 @@ import PropsContext, {
 } from './Contexts/PropsContext';
 import {RenderProvider} from './Contexts/RenderContext';
 import {actionTypeGuard} from './Utils/actionTypeGuard';
+import NoiseCancellation from './Controls/NoiseCancellation/NoiseCancellation';
 
 import {
   ActiveSpeakerDetected,
@@ -31,6 +32,7 @@ import {
   UserMuteRemoteVideo,
   UserOffline,
   UserPin,
+  LocalNoiseSuppression
 } from './Reducer';
 import Create from './Rtc/Create';
 import Join from './Rtc/Join';
@@ -206,6 +208,11 @@ const RtcConfigure = (props: {children: React.ReactNode}) => {
           stateUpdate = UserPin(state, action);
         }
         break;
+        case 'LocalNoiseSuppression':
+          if (actionTypeGuard(action, action.type)) {
+            stateUpdate = LocalNoiseSuppression(state, action, localUid);
+          }
+          break;
     }
 
     // TODO: remove Handle event listeners
@@ -333,6 +340,7 @@ const RtcConfigure = (props: {children: React.ReactNode}) => {
   return (
     <Create dispatch={dispatch}>
       {(engineRef) => (
+        <NoiseCancellation engineRef={engineRef} uidState={uidState}>
         <Join
           precall={!rtcProps.callActive}
           engineRef={engineRef}
@@ -365,6 +373,7 @@ const RtcConfigure = (props: {children: React.ReactNode}) => {
             </RenderProvider>
           </RtcProvider>
         </Join>
+        </NoiseCancellation>
       )}
     </Create>
   );
