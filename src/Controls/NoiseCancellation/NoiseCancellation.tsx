@@ -19,7 +19,7 @@ const NoiseCancellation: React.FC<{
 
   useEffect(() => {
     if (isAudioEnabled) {
-      const denoiserExtension = new AIDenoiserExtension({ assetsPath: '../../node_modules/agora-extension-ai-denoiser/external' });
+      const denoiserExtension = new AIDenoiserExtension({ assetsPath:'../../../node_modules/agora-extension-ai-denoiser/external' });
       AgoraRTC.registerExtensions([denoiserExtension]);
       processor.current = denoiserExtension.createProcessor();
       
