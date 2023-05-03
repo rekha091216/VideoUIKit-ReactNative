@@ -10,7 +10,7 @@ import {
 import wasm1 from "./../../node_modules/agora-extension-ai-denoiser/external/denoiser-wasm.wasm";
 //@ts-ignore
 import wasm2 from "./../../node_modules/agora-extension-ai-denoiser/external/denoiser-wasm-simd.wasm";
-
+import { useLocalUid} from './../../agora-rn-uikit';
 // Necessary To bypass treeshaking, dont remove
 console.log("wasm files loaded are", wasm1, wasm2);
 
@@ -20,10 +20,11 @@ const NoiseCancellation: React.FC<{
   engineRef: React.MutableRefObject<RtcEngine>;
 }> = ({ engineRef, uidState, children }: any) => {
   
+  const localUid = useLocalUid();
   const { renderList, activeUids } = uidState;
   const [maxUid] = activeUids;
-  const noiseSuppressionState = renderList[maxUid].noiseSuppression;
-  const isAudioEnabled = renderList[maxUid].audio;
+  const noiseSuppressionState = renderList[localUid].noiseSuppression;
+  const isAudioEnabled = renderList[localUid].audio;
   let processor = useRef(null);
   const denoiserExtension = new AIDenoiserExtension({ assetsPath: "wasm" });
 
