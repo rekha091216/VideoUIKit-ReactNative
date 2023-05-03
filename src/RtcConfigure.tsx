@@ -17,7 +17,7 @@ import PropsContext, {
 } from './Contexts/PropsContext';
 import {RenderProvider} from './Contexts/RenderContext';
 import {actionTypeGuard} from './Utils/actionTypeGuard';
-import NoiseCancellation from './Controls/NoiseCancellation/NoiseCancellation';
+import NoiseCancellation from './NoiseCancellation';
 
 import {
   ActiveSpeakerDetected,

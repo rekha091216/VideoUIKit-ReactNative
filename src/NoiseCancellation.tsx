@@ -1,8 +1,15 @@
 import React, {useContext, useEffect, useRef} from 'react';
-import {RenderStateInterface} from '../../Contexts/RtcContext';
+import {RenderStateInterface} from './Contexts/RtcContext';
 import RtcEngine from 'react-native-agora';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import { AIDenoiserExtension, AIDenoiserProcessor, AIDenoiserProcessorMode, IAIDenoiserProcessor } from "agora-extension-ai-denoiser";
+//@ts-ignore
+import wasm1 from './../../node_modules/agora-extension-ai-denoiser/external/denoiser-wasm.wasm';
+//@ts-ignore
+import wasm2 from './../../node_modules/agora-extension-ai-denoiser/external/denoiser-wasm-simd.wasm';
+
+// Necessary To bypass treeshaking, dont remove
+console.log('wasm files loaded', wasm1, wasm2);
 
 const NoiseCancellation: React.FC<{
   children: React.ReactNode;
@@ -19,7 +26,7 @@ const NoiseCancellation: React.FC<{
 
   useEffect(() => {
     if (isAudioEnabled) {
-      const denoiserExtension = new AIDenoiserExtension({ assetsPath:'../../../node_modules/agora-extension-ai-denoiser/external' });
+      const denoiserExtension = new AIDenoiserExtension({ assetsPath: "wasm"});
       AgoraRTC.registerExtensions([denoiserExtension]);
       processor.current = denoiserExtension.createProcessor();
       
