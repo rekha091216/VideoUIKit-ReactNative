@@ -26,10 +26,10 @@ const NoiseCancellation: React.FC<{
   const noiseSuppressionState = renderList[localUid].noiseSuppression;
   const isAudioEnabled = renderList[localUid].audio;
   let processor = useRef(null);
-  const denoiserExtension = new AIDenoiserExtension({ assetsPath: "wasm" });
-
+ 
   useEffect(() => {
     const initExtension = async () => {
+      const denoiserExtension = new AIDenoiserExtension({ assetsPath: "wasm" });
       AgoraRTC.registerExtensions([denoiserExtension]);
       processor.current = denoiserExtension.createProcessor();
     };
@@ -55,7 +55,7 @@ const NoiseCancellation: React.FC<{
       localAudioTrack
         ?.pipe(processor.current)
         .pipe(localAudioTrack.processorDestination);
-      processor.current?.setMode(AIDenoiserProcessorMode.STATIONARY_NS);
+      // processor.current?.setMode(AIDenoiserProcessorMode.STATIONARY_NS);
       await processor?.current?.enable();
     }
   };
