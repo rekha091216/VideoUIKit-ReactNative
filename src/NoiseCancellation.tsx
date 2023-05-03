@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {RenderStateInterface} from './Contexts/RtcContext';
 import RtcEngine from 'react-native-agora';
 import AgoraRTC from 'agora-rtc-sdk-ng';
