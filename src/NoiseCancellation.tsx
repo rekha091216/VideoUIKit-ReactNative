@@ -25,6 +25,7 @@ const NoiseCancellation: React.FC<{
   
 
   useEffect(() => {
+    
     if (isAudioEnabled) {
       const denoiserExtension = new AIDenoiserExtension({ assetsPath: "wasm"});
       AgoraRTC.registerExtensions([denoiserExtension]);
