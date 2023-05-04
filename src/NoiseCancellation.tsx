@@ -4,8 +4,6 @@ import RtcEngine from "react-native-agora";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import {
   AIDenoiserExtension,
-  AIDenoiserProcessorLevel,
-  AIDenoiserProcessorMode,
 } from "agora-extension-ai-denoiser";
 //@ts-ignore
 import wasm1 from "./../../node_modules/agora-extension-ai-denoiser/external/denoiser-wasm.wasm";
@@ -22,23 +20,18 @@ const NoiseCancellation: React.FC<{
 }> = ({ engineRef, uidState, children }: any) => {
   
   const localUid = useLocalUid();
-  const { renderList, activeUids } = uidState;
+  const { renderList } = uidState;
   const noiseSuppressionState = renderList[localUid].noiseSuppression;
-  // const isAudioEnabled = renderList[localUid].audio;
   let processor = useRef(null);
 
 
   useEffect(() => {
-      const localAudioTrack = engineRef.current?.localStream?.audio;
+      
       const denoiserExtension = new AIDenoiserExtension({ assetsPath: "wasm" });
       AgoraRTC.registerExtensions([denoiserExtension]);
-      processor.current = denoiserExtension.createProcessor();
+    processor.current = denoiserExtension.createProcessor();
+    processor.current.disable();
     
-      processor.current.onoverload = async () => {
-        console.log("overload!!!");
-        await processor.current.setMode("STATIONARY_NS");
-        await processor.current.disable();
-      }
   }, [])
 
 
@@ -52,13 +45,13 @@ const NoiseCancellation: React.FC<{
     }
   }, [noiseSuppressionState]);
 
+
   const enableNoiseSuppression = async () => {
 
     const localAudioTrack = engineRef.current?.localStream?.audio;
 
     if (processor.current) {
       localAudioTrack?.pipe(processor.current).pipe(localAudioTrack?.processorDestination);
-      processor.current?.setLevel(AIDenoiserProcessorLevel.AGGRESSIVE);
       await processor?.current?.enable();
     }
   };
@@ -68,7 +61,9 @@ const NoiseCancellation: React.FC<{
       await processor?.current?.disable();
     }
   };
+
   return <>{children}</>;
+
 };
 
 export default NoiseCancellation;
